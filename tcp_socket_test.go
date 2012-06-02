@@ -10,5 +10,9 @@ func TestLanguage(t *testing.T) {
 		t.Log("bad parsing")
 		t.Fail()
 	}
-
+	key, value, ok = Parse("popo42")
+	if ok {
+		t.Log("parse bad text")
+		t.Fail()
+	}
 }

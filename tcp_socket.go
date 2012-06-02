@@ -8,7 +8,7 @@ import (
 var reParse *regexp.Regexp
 
 func init() {
-	reParse = regexp.MustCompile("(\\w*)\\s*(\\d*)")
+	reParse = regexp.MustCompile("(\\w+)\\s+(\\d+)")
 }
 
 func Parse(s string) (string, int64, bool) {
