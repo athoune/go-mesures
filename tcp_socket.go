@@ -5,9 +5,14 @@ import (
 	"strconv"
 )
 
+var reParse *regexp.Regexp
+
+func init() {
+	reParse = regexp.MustCompile("(\\w*)\\s*(\\d*)")
+}
+
 func Parse(s string) (string, int64, bool) {
-	re, _ := regexp.Compile("(\\w*)\\s*(\\d*)")
-	results := re.FindStringSubmatch(s)
+	results := reParse.FindStringSubmatch(s)
 	if results == nil {
 		return "", 0, false
 	}

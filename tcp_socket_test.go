@@ -1,7 +1,6 @@
 package tcp_socket
 
 import (
-	"fmt"
 	"testing"
 )
 
