@@ -17,7 +17,7 @@ func TestTopic(t *testing.T) {
 		t.Fail()
 	}
 	Publish("popo")
-	Publish("again")
 	c.Leave()
+	Publish("again")
 	d.Leave()
 }
