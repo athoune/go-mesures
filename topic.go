@@ -1,17 +1,17 @@
 package main
 
 var clientCount = 0
-var clients map[int]chan string = make(map[int]chan string)
+var clients map[int]chan msg = make(map[int]chan msg)
 
 type client struct {
 	id      int
-	channel chan string
-	cb      func(s string)
+	channel chan msg
+	cb      func(m msg)
 }
 
-func Suscribe(cb func(s string)) client {
+func Suscribe(cb func(m msg)) client {
 	clientCount += 1
-	ch := make(chan string)
+	ch := make(chan msg)
 	clients[clientCount] = ch
 	cl := client{clientCount, ch, cb}
 	go cl.loop()
@@ -24,15 +24,14 @@ func (c *client) Leave() {
 }
 
 func (c *client) loop() {
-	var s string
 	for {
-		s = <-c.channel
-		c.cb(s)
+        m := <-c.channel
+		c.cb(m)
 	}
 }
 
-func Publish(s string) {
+func Publish(m msg) {
 	for i := range clients {
-		clients[i] <- s
+		clients[i] <- m
 	}
 }

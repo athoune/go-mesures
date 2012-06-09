@@ -8,7 +8,7 @@ func TestTopic(t *testing.T) {
 	cFlag := true
 	dFlag := true
 	done := make(chan bool, 4)
-	c := Suscribe(func(s string) {
+	c := Suscribe(func(m msg) {
 		done <- true
 		if cFlag {
 			cFlag = false
@@ -18,7 +18,7 @@ func TestTopic(t *testing.T) {
 		t.Log("bad counter")
 		t.Fail()
 	}
-	d := Suscribe(func(s string) {
+	d := Suscribe(func(m msg) {
 		done <- true
 		if dFlag {
 			dFlag = false
@@ -28,8 +28,8 @@ func TestTopic(t *testing.T) {
 		t.Log("bad counter")
 		t.Fail()
 	}
-	Publish("popo")
-	Publish("again")
+	Publish(msg{"popo", 42})
+	Publish(msg{"again", 0})
 	//waiting for async tasks
 	<-done
 	<-done
