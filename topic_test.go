@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestTopic(t *testing.T) {
 	cFlag := true
 	dFlag := true
+	done := make(chan bool, 4)
 	c := Suscribe(func(s string) {
-		fmt.Println("C", s)
+		done <- true
 		if cFlag {
 			cFlag = false
 		}
@@ -19,7 +19,7 @@ func TestTopic(t *testing.T) {
 		t.Fail()
 	}
 	d := Suscribe(func(s string) {
-		fmt.Println("D", s)
+		done <- true
 		if dFlag {
 			dFlag = false
 		}
@@ -29,10 +29,14 @@ func TestTopic(t *testing.T) {
 		t.Fail()
 	}
 	Publish("popo")
-	c.Leave()
 	Publish("again")
+	//waiting for async tasks
+	<-done
+	<-done
+	<-done
+	<-done
+	c.Leave()
 	d.Leave()
-    //[FIXME] a new channel must be used to wait all message
 	if cFlag {
 		t.Log("Trouble with closure")
 		t.Fail()
