@@ -6,8 +6,8 @@ import (
 )
 
 type msg struct {
-    key string
-    value int64
+	key   string
+	value int64
 }
 
 var reParse *regexp.Regexp
