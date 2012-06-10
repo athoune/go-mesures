@@ -14,7 +14,7 @@ func Suscribe(cb func(m msg)) client {
 	ch := make(chan msg)
 	clients[clientCount] = ch
 	cl := client{clientCount, ch, cb}
-	go cl.loop()
+	/*go cl.loop()*/
 	return cl
 }
 
@@ -25,7 +25,7 @@ func (c *client) Leave() {
 
 func (c *client) loop() {
 	for {
-        m := <-c.channel
+		m := <-c.channel
 		c.cb(m)
 	}
 }
