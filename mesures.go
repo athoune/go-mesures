@@ -42,6 +42,7 @@ func doServeStuff(conn net.Conn) {
 		if ok {
 			fmt.Println("Received ", kv.key, kv.value)
 			conn.Write([]byte("ok\n"))
+            //[FIXME] it's dangerous with multiple connections
 			Mesures[kv.key] = kv.value
 			Publish(kv)
 		} else {
