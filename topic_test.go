@@ -8,22 +8,30 @@ func TestTopic(t *testing.T) {
 	cFlag := true
 	dFlag := true
 	done := make(chan bool, 4)
-	c := Suscribe(func(m msg) {
-		done <- true
-		if cFlag {
-			cFlag = false
+	c := Suscribe()
+	go func() {
+		for {
+			<-c.channel
+			done <- true
+			if cFlag {
+				cFlag = false
+			}
 		}
-	})
+	}()
 	if c.id != 1 {
 		t.Log("bad counter")
 		t.Fail()
 	}
-	d := Suscribe(func(m msg) {
-		done <- true
-		if dFlag {
-			dFlag = false
+	d := Suscribe()
+	go func() {
+		for {
+			<-d.channel
+			done <- true
+			if dFlag {
+				dFlag = false
+			}
 		}
-	})
+	}()
 	if d.id != 2 {
 		t.Log("bad counter")
 		t.Fail()
